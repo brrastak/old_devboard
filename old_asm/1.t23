@@ -1,0 +1,222 @@
+.include "tn2313def.inc"
+
+.def	Null = r0
+.def	Time = r16
+.def	TimeInd = r17
+.def	TimeDin = r18
+.def	Flags = r19
+.def	Sound = r20
+.def	Loud = r21
+.def	Wq = r22
+.def	Wq1 = r23
+.def	Wq2 = r24
+
+
+
+.dseg
+
+Out0:	.byte 8
+
+
+.cseg
+
+.org 0
+
+	rjmp RESET ; Reset Handler
+	rjmp INT0 ; External Interrupt0 Handler
+	rjmp INT1 ; External Interrupt1 Handler
+	rjmp TIM1_CAPT ; Timer1 Capture Handler
+	rjmp TIM1_COMPA ; Timer1 CompareA Handler
+	rjmp TIM1_OVF ; Timer1 Overflow Handler
+	rjmp TIM0_OVF ; Timer0 Overflow Handler
+	rjmp USART0_RXC ; USART0 RX Complete Handler
+	rjmp USART0_DRE ; USART0,UDR Empty Handler
+	rjmp USART0_TXC ; USART0 TX Complete Handler
+	rjmp ANA_COMP ; Analog Comparator Handler
+	rjmp PCINT ; Pin Change Interrupt
+	rjmp TIMER1_COMPB ; Timer1 Compare B Handler
+	rjmp TIMER0_COMPA ; Timer0 Compare A Handler
+	rjmp TIMER0_COMPB ; Timer0 Compare B Handler
+	rjmp USI_START ; USI Start Handler
+	rjmp USI_OVERFLOW ; USI Overflow Handler
+	rjmp EE_READY ; EEPROM Ready Handler
+	rjmp WDT_OVERFLOW ; Watchdog Overflow Handler
+
+;INT0:
+;INT1:
+TIM1_CAPT:
+TIM1_COMPA:
+TIM1_OVF:
+;TIM0_OVF:
+USART0_RXC:
+USART0_DRE:
+USART0_TXC:
+ANA_COMP:
+PCINT:
+TIMER1_COMPB:
+TIMER0_COMPA:
+TIMER0_COMPB:
+USI_START:
+USI_OVERFLOW:
+EE_READY:
+WDT_OVERFLOW:
+
+RESET:	cli
+	ldi Wq, Low(RamEnd)
+	out spl, Wq
+
+	ldi Wq, 0xff
+	out TIFR, Wq
+	ldi Wq, 6
+	out tcnt0, Wq
+	ldi Wq, 2
+	out tccr0b, Wq
+	ldi Wq, 0x02
+	out timsk, Wq
+
+	ldi Wq, 0xff
+	out ddrb, Wq
+	ldi Wq, 0b11000011
+	out ddrd, Wq
+	ldi Wq, 0b00111101
+	out portd, Wq
+	ldi Wq, 0b00111100
+	out portd, Wq
+	ldi Wq, 0b00000001
+	mov Flags, Wq
+
+	sei
+
+Begin:	ldi Wq1, 0
+	ldi Xl, Low(Out0)
+	ldi Xh, High(Out0)
+	ldi Wq, 7
+	add Xl, Wq
+	adc Xh, Wq1
+	ldi Wq, 0
+
+Repeat:	ldi Yl, low(Out0)
+	ldi Yh, High(Out0)
+	add Yl, Wq
+	adc Yh, Wq1
+	rcall Coder
+	st Y, Null
+	inc Wq
+	cpi Wq, 7
+	brne Repeat
+
+Loop:	in Wq, PIND
+	andi Wq, 0b00111100
+	lsl Wq
+	com Wq
+	st X, Wq
+	rcall Wait
+	rjmp Loop
+
+	rjmp Begin
+
+
+Wait:	push Wq
+	ldi Wq, 0
+BA:	dec Wq
+	brne BA
+	pop Wq
+	ret
+
+
+Coder:	clr Null
+	ldi Zl, Low(Table*2)
+	ldi Zh, High(Table*2)
+	add Zl, Wq
+	adc Zh, Null
+	lpm
+	ret
+
+
+Table:	.db 0b01111110, 0b00110000, 0b01101101, 0b01111001
+	.db 0b00110011, 0b01011011, 0b01011111, 0b01110000
+	.db 0b01111111, 0b01111011
+
+
+TIM0_OVF:	push Wq
+	in Wq, SREG
+	push Wq
+	push Zl
+	push Zh
+
+	ldi Wq, 0x02
+	out TIFR, Wq
+	ldi Wq, 6
+	out TCNT0, Wq
+
+	in Wq, PIND
+	andi Wq, 0b00111100
+	andi Flags, 0b11000011
+	add Flags, Wq
+
+	inc Time
+	cpi Time, 1
+	brne CA
+	mov Wq, Flags
+	andi Wq, 0b00000001
+	breq CA
+	cbi PORTD, 1
+
+CA:	cpi Time, 2
+	brne Din
+
+	clr Time
+	sbi PORTD, 1
+	mov Wq, Flags
+	andi Wq, 0b00000001
+	breq CB
+
+	inc TimeInd
+	cpi TimeInd, 8
+	brne CB
+	clr TimeInd
+CB:	clr Wq
+	ldi Zl, Low(Out0)
+	ldi Zh, High(Out0)
+	add Zl, TimeInd
+	adc Zh, Wq
+	ld Wq, Z
+	out PORTB, Wq
+
+Din:	mov Wq, Flags
+	andi Wq, 0b01000000
+	brne CC
+	cbi PORTD, 6
+	clr TimeDin
+	rjmp End
+
+CC:	inc TimeDin
+	mov Wq, Flags
+	andi Wq, 0b10000000
+	brne CD
+
+	cp TimeDin, Sound
+	brne End
+	sbi PORTD, 6
+	rjmp CF
+
+CD:	cp TimeDin, Loud
+	brne CE
+	cbi PORTD, 6
+CE:	cp TimeDin, Sound
+	brne End
+	cbi PORTD, 6
+
+CF:	mov Wq, Flags
+	com Wq
+	andi Wq, 0b10000000
+	andi Flags, 0b01111111
+	or Flags, Wq
+
+End:	pop Zh
+	pop Zl
+	pop Wq
+	out SREG, Wq
+	pop Wq
+
+	reti					
