@@ -1,16 +1,16 @@
 <circuit version="1.1.0-SR2" rev="260312" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="1" >
 
-<item itemtype="Seven Segment" CircId="Seven Segment-2" mainComp="false" Show_id="false" Show_Val="false" Pos="-44,-420" rotation="0" hflip="1" vflip="1" label="Seven Segment-2" idLabPos="20,-44" labelrot="0" valLabPos="-16,20" valLabRot="0" Color="Red" NumDisplays="7" Vertical_Pins="false" CommonCathode="true" Threshold="2.4 V" MaxCurrent="20 mA" Resistance="1 Ω" />
+<item itemtype="Seven Segment" CircId="Seven Segment-2" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="-44,-420" rotation="0" hflip="1" vflip="1" label="Seven Segment-2" idLabPos="20,-44" labelrot="0" valLabPos="-16,20" valLabRot="0" Color="Red" NumDisplays="7" Vertical_Pins="false" CommonCathode="true" Threshold="0.4 V" MaxCurrent="20 mA" Resistance="0.01 Ω" />
 
-<item itemtype="MCU" CircId="tiny2313-3" mainComp="false" Show_id="false" Show_Val="false" Pos="-328,-424" rotation="0" hflip="1" vflip="1" label="tiny2313-3" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" Frequency="10 MHz" Program="../asm_target/main.hex" Auto_Load="false" saveEepr="true" Logic_Symbol="false" Rst_enabled="false" Ext_Osc="false" Wdt_enabled="false" MainMcu="true" SerialMon="-1" />
+<item itemtype="MCU" CircId="tiny2313-3" mainComp="false" Show_id="false" Show_Val="false" Pos="-328,-424" rotation="0" hflip="1" vflip="1" label="tiny2313-3" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" Frequency="10 MHz" Program="../asm_target/main.hex" Auto_Load="true" saveEepr="true" Logic_Symbol="false" Rst_enabled="false" Ext_Osc="false" Wdt_enabled="false" MainMcu="true" SerialMon="-1" />
 
 <item itemtype="AudioOut" CircId="AudioOut-4" mainComp="false" Show_id="false" Show_Val="false" Pos="-232,-336" rotation="0" hflip="1" vflip="1" label="AudioOut-4" idLabPos="-20,-36" labelrot="0" valLabPos="-16,20" valLabRot="0" Buzzer="false" Impedance="8 Ω" Frequency="1 kHz" />
 
-<item itemtype="LedBar" CircId="LedBar-6" mainComp="false" Show_id="false" Show_Val="false" Pos="252,-332" rotation="0" hflip="1" vflip="1" label="LedBar-6" idLabPos="-16,-44" labelrot="0" valLabPos="-16,-56" valLabRot="0" Color="Red" Size="7 _Leds" Grounded="false" Threshold="1.8 V" MaxCurrent="30 mA" Resistance="0.6 Ω" />
+<item itemtype="LedBar" CircId="LedBar-6" mainComp="false" ShowProp="Resistance" Show_id="false" Show_Val="true" Pos="252,-332" rotation="0" hflip="1" vflip="1" label="LedBar-6" idLabPos="-16,-44" labelrot="0" valLabPos="-9.35271,22.2258" valLabRot="0" Color="Red" Size="7 _Leds" Grounded="false" Threshold="1.8 V" MaxCurrent="30 mA" Resistance="0.01 Ω" />
 
 <item itemtype="Ground" CircId="Ground-10" mainComp="false" Show_id="false" Show_Val="false" Pos="-248,-312" rotation="0" hflip="1" vflip="1" label="Ground-10" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
 
-<item itemtype="Demux" CircId="Demux-14" mainComp="false" Show_id="false" Show_Val="false" Pos="-100,-324" rotation="0" hflip="1" vflip="1" label="Demux-14" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Address_Bits="3 _bits" Input_High_V="2.5 V" Input_Low_V="2.5 V" Input_Imped="1000 MΩ" Out_High_V="5 V" Out_Low_V="0 V" Out_Imped="40 Ω" Inverted="true" Open_Collector="false" pd_n="1 _Gates" Tpd_ps="10 ns" Tr_ps="3 ns" Tf_ps="4 ns" />
+<item itemtype="Demux" CircId="Demux-14" mainComp="false" ShowProp="Out_Imped" Show_id="false" Show_Val="true" Pos="-100,-324" rotation="0" hflip="1" vflip="1" label="Demux-14" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Address_Bits="3 _bits" Input_High_V="2.5 V" Input_Low_V="2.5 V" Input_Imped="1000 MΩ" Out_High_V="5 V" Out_Low_V="0 V" Out_Imped="0.01 Ω" Inverted="true" Open_Collector="false" pd_n="1 _Gates" Tpd_ps="10 ns" Tr_ps="3 ns" Tf_ps="4 ns" />
 
 <item itemtype="Counter" CircId="Counter-21" mainComp="false" Show_id="false" Show_Val="false" Pos="-236,-232" rotation="0" hflip="1" vflip="1" label="Counter-21" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Pin_SET="false" Clock_Inverted="true" Reset_Inverted="false" Max_Value="1" Input_High_V="2.5 V" Input_Low_V="2.5 V" Input_Imped="1000 MΩ" Out_High_V="12 V" Out_Low_V="0 V" Out_Imped="40 mΩ" pd_n="1 _Gates" Tpd_ps="10 ns" Tr_ps="3 ns" Tf_ps="4 ns" />
 
@@ -19,8 +19,6 @@
 <item itemtype="Counter" CircId="Counter-23" mainComp="false" Show_id="false" Show_Val="false" Pos="-132,-232" rotation="0" hflip="1" vflip="1" label="Counter-23" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Pin_SET="false" Clock_Inverted="true" Reset_Inverted="false" Max_Value="1" Input_High_V="2.5 V" Input_Low_V="2.5 V" Input_Imped="1000 MΩ" Out_High_V="5 V" Out_Low_V="0 V" Out_Imped="40 Ω" pd_n="1 _Gates" Tpd_ps="10 ns" Tr_ps="3 ns" Tf_ps="4 ns" />
 
 <item itemtype="Fixed Voltage" CircId="Fixed Voltage-57" mainComp="false" Show_id="false" Show_Val="false" Pos="-148,-324" rotation="0" hflip="1" vflip="1" label="Fixed Voltage-57" idLabPos="-64,-24" labelrot="0" valLabPos="-16,8" valLabRot="0" Voltage="5 V" Out="true" />
-
-<item itemtype="Bus" CircId="Bus-66" mainComp="false" Show_id="false" Show_Val="false" Pos="-272,-400" rotation="0" hflip="1" vflip="-1" label="Bus-66" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Num_Bits="7 _bits" Start_Bit="0" />
 
 <item itemtype="Push" CircId="Push-67" mainComp="false" Show_id="false" Show_Val="false" Pos="-408,-384" rotation="0" hflip="1" vflip="1" label="Push-67" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Norm_Close="false" Poles="1" />
 
@@ -37,6 +35,8 @@
 <item itemtype="Fixed Voltage" CircId="Fixed Voltage-98" mainComp="false" Show_id="false" Show_Val="false" Pos="-152,-376" rotation="0" hflip="1" vflip="1" label="Fixed Voltage-98" idLabPos="-64,-24" labelrot="0" valLabPos="-16,8" valLabRot="0" Voltage="5 V" Out="false" />
 
 <item itemtype="Bus" CircId="Bus-117" mainComp="false" Show_id="false" Show_Val="false" Pos="-84,-396" rotation="0" hflip="-1" vflip="1" label="Bus-117" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Num_Bits="7 _bits" Start_Bit="0" />
+
+<item itemtype="Bus" CircId="Bus-125" mainComp="false" Show_id="false" Show_Val="false" Pos="-268,-400" rotation="0" hflip="1" vflip="-1" label="Bus-125" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Num_Bits="7 _bits" Start_Bit="0" />
 
 <item itemtype="Node" CircId="Node-26" mainComp="false" Pos="-152,-232" />
 
@@ -64,7 +64,7 @@
 
 <item itemtype="Node" CircId="Node-116" mainComp="false" Pos="-252,-224" />
 
-<item itemtype="Node" CircId="Node-118" mainComp="false" Pos="-84,-444" />
+<item itemtype="Node" CircId="Node-130" mainComp="false" Pos="-84,-444" />
 
 <item itemtype="Connector" uid="Connector-3" startpinid="Ground-10-Gnd" endpinid="AudioOut-4-rPin" pointList="-248,-328,-248,-336" />
 
@@ -102,20 +102,6 @@
 
 <item itemtype="Connector" uid="Connector-129" startpinid="tiny2313-3-PORTD3" endpinid="Push-67-switch0pinN" pointList="-336,-368,-376,-368,-376,-384,-392,-384" />
 
-<item itemtype="Connector" uid="Connector-155" startpinid="tiny2313-3-PORTB6" endpinid="Bus-66-ePin7" pointList="-288,-400,-280,-400" />
-
-<item itemtype="Connector" uid="Connector-156" startpinid="tiny2313-3-PORTB5" endpinid="Bus-66-ePin6" pointList="-288,-392,-280,-392" />
-
-<item itemtype="Connector" uid="Connector-157" startpinid="tiny2313-3-PORTB4" endpinid="Bus-66-ePin5" pointList="-288,-384,-280,-384" />
-
-<item itemtype="Connector" uid="Connector-158" startpinid="tiny2313-3-PORTB3" endpinid="Bus-66-ePin4" pointList="-288,-376,-280,-376" />
-
-<item itemtype="Connector" uid="Connector-159" startpinid="tiny2313-3-PORTB2" endpinid="Bus-66-ePin3" pointList="-288,-368,-280,-368" />
-
-<item itemtype="Connector" uid="Connector-160" startpinid="tiny2313-3-PORTB1" endpinid="Bus-66-ePin2" pointList="-288,-360,-280,-360" />
-
-<item itemtype="Connector" uid="Connector-167" startpinid="tiny2313-3-PORTB0" endpinid="Bus-66-ePin1" pointList="-288,-352,-280,-352" />
-
 <item itemtype="Connector" uid="Connector-183" startpinid="Demux-14-out0" endpinid="Seven Segment-2-pin_commona" pointList="-76,-356,-36,-356,-36,-388" />
 
 <item itemtype="Connector" uid="Connector-184" startpinid="Demux-14-out1" endpinid="Seven Segment-2-pin_commonb" pointList="-76,-348,-4,-348,-4,-388" />
@@ -123,8 +109,6 @@
 <item itemtype="Connector" uid="Connector-185" startpinid="Demux-14-out2" endpinid="Seven Segment-2-pin_commonc" pointList="-76,-340,28,-340,28,-388" />
 
 <item itemtype="Connector" uid="Connector-186" startpinid="Demux-14-out3" endpinid="Seven Segment-2-pin_commond" pointList="-76,-332,60,-332,60,-388" />
-
-<item itemtype="Connector" uid="Connector-187" startpinid="Demux-14-out4" endpinid="Seven Segment-2-pin_commone" pointList="-76,-324,92,-324,92,-388" />
 
 <item itemtype="Connector" uid="Connector-188" startpinid="Demux-14-out5" endpinid="Seven Segment-2-pin_commonf" pointList="-76,-316,124,-316,124,-388" />
 
@@ -188,12 +172,6 @@
 
 <item itemtype="Connector" uid="Connector-286" startpinid="tiny2313-3-PORTD2" endpinid="Push-68-switch0pinN" pointList="-336,-376,-368,-376,-368,-432,-392,-432" />
 
-<item itemtype="Connector" uid="Connector-292" startpinid="Bus-117-busPinI" endpinid="Node-118-1" pointList="-84,-444,-84,-444" />
-
-<item itemtype="Connector" uid="Connector-293" startpinid="Bus-85-busPinI" endpinid="Node-118-0" pointList="220,-356,220,-496,-84,-496,-84,-444" />
-
-<item itemtype="Connector" uid="Connector-294" startpinid="Node-118-2" endpinid="Bus-66-ePin0" pointList="-84,-444,-272,-444,-272,-400" />
-
 <item itemtype="Connector" uid="Connector-295" startpinid="Bus-117-ePin1" endpinid="Seven Segment-2-pin_a" pointList="-76,-444,-68,-444" />
 
 <item itemtype="Connector" uid="Connector-296" startpinid="Bus-117-ePin2" endpinid="Seven Segment-2-pin_b" pointList="-76,-436,-68,-436" />
@@ -209,5 +187,27 @@
 <item itemtype="Connector" uid="Connector-301" startpinid="Bus-117-ePin7" endpinid="Seven Segment-2-pin_g" pointList="-76,-396,-68,-396" />
 
 <item itemtype="Connector" uid="Connector-265" startpinid="tiny2313-3-PORTD1" endpinid="Counter-21-in0" pointList="-336,-400,-348,-400,-348,-264,-260,-264,-260,-232,-252,-232" />
+
+<item itemtype="Connector" uid="Connector-306" startpinid="Demux-14-out4" endpinid="Seven Segment-2-pin_commone" pointList="-76,-324,-44,-324,-44,-276,92,-276,92,-388" />
+
+<item itemtype="Connector" uid="Connector-340" startpinid="Bus-125-ePin1" endpinid="tiny2313-3-PORTB0" pointList="-276,-352,-288,-352" />
+
+<item itemtype="Connector" uid="Connector-341" startpinid="Bus-125-ePin2" endpinid="tiny2313-3-PORTB1" pointList="-276,-360,-288,-360" />
+
+<item itemtype="Connector" uid="Connector-342" startpinid="Bus-125-ePin3" endpinid="tiny2313-3-PORTB2" pointList="-276,-368,-288,-368" />
+
+<item itemtype="Connector" uid="Connector-343" startpinid="Bus-125-ePin4" endpinid="tiny2313-3-PORTB3" pointList="-276,-376,-288,-376" />
+
+<item itemtype="Connector" uid="Connector-344" startpinid="Bus-125-ePin5" endpinid="tiny2313-3-PORTB4" pointList="-276,-384,-288,-384" />
+
+<item itemtype="Connector" uid="Connector-345" startpinid="Bus-125-ePin6" endpinid="tiny2313-3-PORTB5" pointList="-276,-392,-288,-392" />
+
+<item itemtype="Connector" uid="Connector-346" startpinid="Bus-125-ePin7" endpinid="tiny2313-3-PORTB6" pointList="-276,-400,-288,-400" />
+
+<item itemtype="Connector" uid="Connector-347" startpinid="Bus-125-ePin0" endpinid="Node-130-1" pointList="-268,-400,-268,-444,-84,-444" />
+
+<item itemtype="Connector" uid="Connector-348" startpinid="Bus-85-busPinI" endpinid="Node-130-0" pointList="220,-356,220,-496,-84,-496,-84,-444" />
+
+<item itemtype="Connector" uid="Connector-349" startpinid="Node-130-2" endpinid="Bus-117-busPinI" pointList="-84,-444,-84,-444" />
 
 </circuit>
