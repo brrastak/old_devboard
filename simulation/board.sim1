@@ -36,7 +36,7 @@
 
 <item itemtype="Bus" CircId="Bus-117" mainComp="false" Show_id="false" Show_Val="false" Pos="-84,-396" rotation="0" hflip="-1" vflip="1" label="Bus-117" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Num_Bits="7 _bits" Start_Bit="0" />
 
-<item itemtype="Bus" CircId="Bus-125" mainComp="false" Show_id="false" Show_Val="false" Pos="-268,-400" rotation="0" hflip="1" vflip="-1" label="Bus-125" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Num_Bits="7 _bits" Start_Bit="0" />
+<item itemtype="Bus" CircId="Bus-131" mainComp="false" Show_id="false" Show_Val="false" Pos="-272,-352" rotation="0" hflip="1" vflip="1" label="Bus-131" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Num_Bits="7 _bits" Start_Bit="0" />
 
 <item itemtype="Node" CircId="Node-26" mainComp="false" Pos="-152,-232" />
 
@@ -64,7 +64,7 @@
 
 <item itemtype="Node" CircId="Node-116" mainComp="false" Pos="-252,-224" />
 
-<item itemtype="Node" CircId="Node-130" mainComp="false" Pos="-84,-444" />
+<item itemtype="Node" CircId="Node-132" mainComp="false" Pos="-84,-444" />
 
 <item itemtype="Connector" uid="Connector-3" startpinid="Ground-10-Gnd" endpinid="AudioOut-4-rPin" pointList="-248,-328,-248,-336" />
 
@@ -190,24 +190,24 @@
 
 <item itemtype="Connector" uid="Connector-306" startpinid="Demux-14-out4" endpinid="Seven Segment-2-pin_commone" pointList="-76,-324,-44,-324,-44,-276,92,-276,92,-388" />
 
-<item itemtype="Connector" uid="Connector-340" startpinid="Bus-125-ePin1" endpinid="tiny2313-3-PORTB0" pointList="-276,-352,-288,-352" />
+<item itemtype="Connector" uid="Connector-355" startpinid="Bus-131-ePin7" endpinid="tiny2313-3-PORTB0" pointList="-280,-352,-288,-352" />
 
-<item itemtype="Connector" uid="Connector-341" startpinid="Bus-125-ePin2" endpinid="tiny2313-3-PORTB1" pointList="-276,-360,-288,-360" />
+<item itemtype="Connector" uid="Connector-356" startpinid="Bus-131-ePin6" endpinid="tiny2313-3-PORTB1" pointList="-280,-360,-288,-360" />
 
-<item itemtype="Connector" uid="Connector-342" startpinid="Bus-125-ePin3" endpinid="tiny2313-3-PORTB2" pointList="-276,-368,-288,-368" />
+<item itemtype="Connector" uid="Connector-357" startpinid="Bus-131-ePin5" endpinid="tiny2313-3-PORTB2" pointList="-280,-368,-288,-368" />
 
-<item itemtype="Connector" uid="Connector-343" startpinid="Bus-125-ePin4" endpinid="tiny2313-3-PORTB3" pointList="-276,-376,-288,-376" />
+<item itemtype="Connector" uid="Connector-358" startpinid="Bus-131-ePin4" endpinid="tiny2313-3-PORTB3" pointList="-280,-376,-288,-376" />
 
-<item itemtype="Connector" uid="Connector-344" startpinid="Bus-125-ePin5" endpinid="tiny2313-3-PORTB4" pointList="-276,-384,-288,-384" />
+<item itemtype="Connector" uid="Connector-359" startpinid="Bus-131-ePin3" endpinid="tiny2313-3-PORTB4" pointList="-280,-384,-288,-384" />
 
-<item itemtype="Connector" uid="Connector-345" startpinid="Bus-125-ePin6" endpinid="tiny2313-3-PORTB5" pointList="-276,-392,-288,-392" />
+<item itemtype="Connector" uid="Connector-360" startpinid="Bus-131-ePin2" endpinid="tiny2313-3-PORTB5" pointList="-280,-392,-288,-392" />
 
-<item itemtype="Connector" uid="Connector-346" startpinid="Bus-125-ePin7" endpinid="tiny2313-3-PORTB6" pointList="-276,-400,-288,-400" />
+<item itemtype="Connector" uid="Connector-361" startpinid="Bus-131-ePin1" endpinid="tiny2313-3-PORTB6" pointList="-280,-400,-288,-400" />
 
-<item itemtype="Connector" uid="Connector-347" startpinid="Bus-125-ePin0" endpinid="Node-130-1" pointList="-268,-400,-268,-444,-84,-444" />
+<item itemtype="Connector" uid="Connector-362" startpinid="Bus-131-busPinI" endpinid="Node-132-1" pointList="-272,-400,-272,-444,-84,-444" />
 
-<item itemtype="Connector" uid="Connector-348" startpinid="Bus-85-busPinI" endpinid="Node-130-0" pointList="220,-356,220,-496,-84,-496,-84,-444" />
+<item itemtype="Connector" uid="Connector-363" startpinid="Bus-85-busPinI" endpinid="Node-132-0" pointList="220,-356,220,-496,-84,-496,-84,-444" />
 
-<item itemtype="Connector" uid="Connector-349" startpinid="Node-130-2" endpinid="Bus-117-busPinI" pointList="-84,-444,-84,-444" />
+<item itemtype="Connector" uid="Connector-364" startpinid="Node-132-2" endpinid="Bus-117-busPinI" pointList="-84,-444,-84,-444" />
 
 </circuit>
