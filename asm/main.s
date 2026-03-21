@@ -1,222 +1,248 @@
-.include "avr/io.h"
-
-.def	Null = r0
-.def	Time = r16
-.def	TimeInd = r17
-.def	TimeDin = r18
-.def	Flags = r19
-.def	Sound = r20
-.def	Loud = r21
-.def	Temp = r22
-.def	Temp1 = r23
-.def	Temp2 = r24
+#include <avr/io.h>
 
 
+.set Null, 0
+.set Time, 16
+.set TimeInd, 17
+.set TimeDin, 18
+.set Flags, 19
+.set Sound, 20
+.set Loud, 21
+.set tmp, 22
+.set tmp1, 23
+.set tmp2, 24
 
-.dseg
+/* define X/Y/Z register aliases used in the original AVRASM */
+.set Xl, 26
+.set Xh, 27
+.set Yl, 28
+.set Yh, 29
+.set Zl, 30
+.set Zh, 31
 
-Out0:	.byte 8
+
+.section .bss
+.global Out0
+.lcomm Out0,8
 
 
-.cseg
-
-.org 0
+.section .text
 
 	rjmp RESET ; Reset Handler
-	rjmp INT0 ; External Interrupt0 Handler
-	rjmp INT1 ; External Interrupt1 Handler
-	rjmp TIM1_CAPT ; Timer1 Capture Handler
-	rjmp TIM1_COMPA ; Timer1 CompareA Handler
-	rjmp TIM1_OVF ; Timer1 Overflow Handler
-	rjmp TIM0_OVF ; Timer0 Overflow Handler
-	rjmp USART0_RXC ; USART0 RX Complete Handler
-	rjmp USART0_DRE ; USART0,UDR Empty Handler
-	rjmp USART0_TXC ; USART0 TX Complete Handler
-	rjmp ANA_COMP ; Analog Comparator Handler
-	rjmp PCINT ; Pin Change Interrupt
-	rjmp TIMER1_COMPB ; Timer1 Compare B Handler
-	rjmp TIMER0_COMPA ; Timer0 Compare A Handler
-	rjmp TIMER0_COMPB ; Timer0 Compare B Handler
-	rjmp USI_START ; USI Start Handler
-	rjmp USI_OVERFLOW ; USI Overflow Handler
-	rjmp EE_READY ; EEPROM Ready Handler
-	rjmp WDT_OVERFLOW ; Watchdog Overflow Handler
+	rjmp INT0_ISR ; External Interrupt0 Handler
+	rjmp INT1_ISR ; External Interrupt1 Handler
+	rjmp TIM1_CAPT_ISR ; Timer1 Capture Handler
+	rjmp TIM1_COMPA_ISR ; Timer1 CompareA Handler
+	rjmp TIM1_OVF_ISR ; Timer1 Overflow Handler
+	rjmp TIM0_OVF_ISR ; Timer0 Overflow Handler
+	rjmp USART0_RXC_ISR ; USART0 RX Complete Handler
+	rjmp USART0_DRE_ISR ; USART0,UDR Empty Handler
+	rjmp USART0_TXC_ISR ; USART0 TX Complete Handler
+	rjmp ANA_COMP_ISR ; Analog Comparator Handler
+	rjmp PCINT_ISR ; Pin Change Interrupt
+	rjmp TIMER1_COMPB_ISR ; Timer1 Compare B Handler
+	rjmp TIMER0_COMPA_ISR ; Timer0 Compare A Handler
+	rjmp TIMER0_COMPB_ISR ; Timer0 Compare B Handler
+	rjmp USI_START_ISR ; USI Start Handler
+	rjmp USI_OVERFLOW_ISR ; USI Overflow Handler
+	rjmp EE_READY_ISR ; EEPROM Ready Handler
+	rjmp WDT_OVERFLOW_ISR ; Watchdog Overflow Handler
 
-;INT0:
-;INT1:
-TIM1_CAPT:
-TIM1_COMPA:
-TIM1_OVF:
-;TIM0_OVF:
-USART0_RXC:
-USART0_DRE:
-USART0_TXC:
-ANA_COMP:
-PCINT:
-TIMER1_COMPB:
-TIMER0_COMPA:
-TIMER0_COMPB:
-USI_START:
-USI_OVERFLOW:
-EE_READY:
-WDT_OVERFLOW:
+INT0_ISR:
+INT1_ISR:
+TIM1_CAPT_ISR:
+TIM1_COMPA_ISR:
+TIM1_OVF_ISR:
+;TIM0_OVF_ISR:
+USART0_RXC_ISR:
+USART0_DRE_ISR:
+USART0_TXC_ISR:
+ANA_COMP_ISR:
+PCINT_ISR:
+TIMER1_COMPB_ISR:
+TIMER0_COMPA_ISR:
+TIMER0_COMPB_ISR:
+USI_START_ISR:
+USI_OVERFLOW_ISR:
+EE_READY_ISR:
+WDT_OVERFLOW_ISR:
 
-RESET:	cli
-	ldi Temp, Low(RamEnd)
-	out spl, Temp
+RESET:
+    cli
+	ldi tmp, lo8(RAMEND)
+	; out SPL, tmp
+    sts SPL, tmp
 
-	ldi Temp, 0xff
-	out TIFR, Temp
-	ldi Temp, 6
-	out tcnt0, Temp
-	ldi Temp, 2
-	out tccr0b, Temp
-	ldi Temp, 0x02
-	out timsk, Temp
+	ldi tmp, 0xff
+	sts TIFR, tmp
+	ldi tmp, 6
+	sts TCNT0, tmp
+	ldi tmp, 2
+	sts TCCR0B, tmp
+	ldi tmp, 0x02
+	sts TIMSK, tmp
 
-	ldi Temp, 0xff
-	out ddrb, Temp
-	ldi Temp, 0b11000011
-	out ddrd, Temp
-	ldi Temp, 0b00111101
-	out portd, Temp
-	ldi Temp, 0b00111100
-	out portd, Temp
-	ldi Temp, 0b00000001
-	mov Flags, Temp
+	ldi tmp, 0xff
+	sts DDRB, tmp
+	ldi tmp, 0b11000011
+	sts DDRD, tmp
+	ldi tmp, 0b00111101
+	sts PORTD, tmp
+	ldi tmp, 0b00111100
+	sts PORTD, tmp
+	ldi tmp, 0b00000001
+	mov Flags, tmp
 
 	sei
 
-Begin:	ldi Temp1, 0
-	ldi Xl, Low(Out0)
-	ldi Xh, High(Out0)
-	ldi Temp, 7
-	add Xl, Temp
-	adc Xh, Temp1
-	ldi Temp, 0
+Begin:	ldi tmp1, 0
+	ldi Xl, lo8(Out0)
+	ldi Xh, hi8(Out0)
+	ldi tmp, 7
+	add Xl, tmp
+	adc Xh, tmp1
+	ldi tmp, 0
 
-Repeat:	ldi Yl, low(Out0)
-	ldi Yh, High(Out0)
-	add Yl, Temp
-	adc Yh, Temp1
+Repeat:	ldi Yl, lo8(Out0)
+	ldi Yh, hi8(Out0)
+	add Yl, tmp
+	adc Yh, tmp1
 	rcall Coder
 	st Y, Null
-	inc Temp
-	cpi Temp, 7
+	inc tmp
+	cpi tmp, 7
 	brne Repeat
 
-Loop:	in Temp, PIND
-	andi Temp, 0b00111100
-	lsl Temp
-	com Temp
-	st X, Temp
+Loop:
+    lds tmp, PIND
+	andi tmp, 0b00111100
+	lsl tmp
+	com tmp
+	st X, tmp
 	rcall Wait
 	rjmp Loop
 
 	rjmp Begin
 
 
-Wait:	push Temp
-	ldi Temp, 0
-BA:	dec Temp
+Wait:	push tmp
+	ldi tmp, 0
+BA:	dec tmp
 	brne BA
-	pop Temp
+	pop tmp
 	ret
 
 
 Coder:	clr Null
-	ldi Zl, Low(Table*2)
-	ldi Zh, High(Table*2)
-	add Zl, Temp
+	ldi Zl, lo8(Table)
+	ldi Zh, hi8(Table)
+	add Zl, tmp
 	adc Zh, Null
 	lpm
 	ret
 
 
-Table:	.db 0b01111110, 0b00110000, 0b01101101, 0b01111001
-	.db 0b00110011, 0b01011011, 0b01011111, 0b01110000
-	.db 0b01111111, 0b01111011
+Table:	.byte 0b01111110, 0b00110000, 0b01101101, 0b01111001
+	.byte 0b00110011, 0b01011011, 0b01011111, 0b01110000
+	.byte 0b01111111, 0b01111011
 
 
-TIM0_OVF:	push Temp
-	in Temp, SREG
-	push Temp
+TIM0_OVF_ISR:	push tmp
+	lds tmp, SREG
+	push tmp
 	push Zl
 	push Zh
 
-	ldi Temp, 0x02
-	out TIFR, Temp
-	ldi Temp, 6
-	out TCNT0, Temp
-
-	in Temp, PIND
-	andi Temp, 0b00111100
+	ldi tmp, 0x02
+	sts TIFR, tmp
+	ldi tmp, 6
+	sts TCNT0, tmp
+	lds tmp, PIND
+	andi tmp, 0b00111100
 	andi Flags, 0b11000011
-	add Flags, Temp
+	add Flags, tmp
 
 	inc Time
 	cpi Time, 1
 	brne CA
-	mov Temp, Flags
-	andi Temp, 0b00000001
+	mov tmp, Flags
+	andi tmp, 0b00000001
 	breq CA
-	cbi PORTD, 1
+	; cbi PORTD, 1
+    lds tmp, PORTD
+    cbi tmp, 1
+    sts PORTD, tmp
 
 CA:	cpi Time, 2
 	brne Din
 
 	clr Time
-	sbi PORTD, 1
-	mov Temp, Flags
-	andi Temp, 0b00000001
+	; sbi PORTD, 1
+    lds tmp, PORTD
+    sbi tmp, 1
+    sts PORTD, tmp
+	mov tmp, Flags
+	andi tmp, 0b00000001
 	breq CB
 
 	inc TimeInd
 	cpi TimeInd, 8
 	brne CB
 	clr TimeInd
-CB:	clr Temp
-	ldi Zl, Low(Out0)
-	ldi Zh, High(Out0)
+CB:	clr tmp
+	ldi Zl, lo8(Out0)
+	ldi Zh, hi8(Out0)
 	add Zl, TimeInd
-	adc Zh, Temp
-	ld Temp, Z
-	out PORTB, Temp
+	adc Zh, tmp
+	ld tmp, Z
+	sts PORTB, tmp
 
-Din:	mov Temp, Flags
-	andi Temp, 0b01000000
+Din:	mov tmp, Flags
+	andi tmp, 0b01000000
 	brne CC
-	cbi PORTD, 6
+	; cbi PORTD, 6
+    lds tmp, PORTD
+    cbi tmp, 6
+    sts PORTD, tmp
 	clr TimeDin
 	rjmp End
 
 CC:	inc TimeDin
-	mov Temp, Flags
-	andi Temp, 0b10000000
+	mov tmp, Flags
+	andi tmp, 0b10000000
 	brne CD
 
 	cp TimeDin, Sound
 	brne End
-	sbi PORTD, 6
+	; sbi PORTD, 6
+    lds tmp, PORTD
+    sbi tmp, 6
+    sts PORTD, tmp
 	rjmp CF
 
 CD:	cp TimeDin, Loud
 	brne CE
-	cbi PORTD, 6
+	; cbi PORTD, 6
+    lds tmp, PORTD
+    cbi tmp, 6
+    sts PORTD, tmp
 CE:	cp TimeDin, Sound
 	brne End
-	cbi PORTD, 6
+	; cbi PORTD, 6
+    lds tmp, PORTD
+    cbi tmp, 6
+    sts PORTD, tmp
 
-CF:	mov Temp, Flags
-	com Temp
-	andi Temp, 0b10000000
+CF:	mov tmp, Flags
+	com tmp
+	andi tmp, 0b10000000
 	andi Flags, 0b01111111
-	or Flags, Temp
+	or Flags, tmp
 
 End:	pop Zh
 	pop Zl
-	pop Temp
-	out SREG, Temp
-	pop Temp
+	pop tmp
+	sts SREG, tmp
+	pop tmp
 
-	reti					
+	reti

@@ -6,8 +6,9 @@ set -e
 SRC_DIR=./asm
 BUILD_DIR=./asm_target
 
-SRC_FILE=$SRC_DIR/main.s
-OUT_FILE=$BUILD_DIR/main
+FILE_NAME=main
+SRC_FILE=$SRC_DIR/$FILE_NAME.s
+OUT_FILE=$BUILD_DIR/$FILE_NAME
 
 MCU=attiny2313
 
@@ -21,11 +22,15 @@ avr-gcc \
   -x assembler-with-cpp \
   -I$SRC_DIR \
   -o $OUT_FILE.elf \
+  -nostartfiles \
   $SRC_FILE
 
 echo "Generating HEX..."
-
 avr-objcopy -O ihex -R .eeprom $OUT_FILE.elf $OUT_FILE.hex
+
+# echo "Generating LST..."
+# avr-objdump -d -S $OUT_FILE.elf > $OUT_FILE.lst
 
 echo "Done!"
 echo "Output: $OUT_FILE.hex"
+# echo "Output: $OUT_FILE.lst"
