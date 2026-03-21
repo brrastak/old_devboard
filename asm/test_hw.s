@@ -1,3 +1,4 @@
+#define __SFR_OFFSET 0x00
 #include <avr/io.h> 
 
 
@@ -49,60 +50,38 @@ WDT_OVERFLOW_ISR:
 RESET:
     cli
 	ldi tmp, lo8(RAMEND)
-    sts SPL, tmp
+    out SPL, tmp
 
     ldi tmp, 0xff
-	sts DDRB, tmp
+	out DDRB, tmp
 	ldi tmp, 0b11000011
-	sts DDRD, tmp
+	out DDRD, tmp
 	ldi tmp, 0b00111101
-	sts PORTD, tmp
+	out PORTD, tmp
 	ldi tmp, 0b00111100
-	sts PORTD, tmp
+	out PORTD, tmp
+
+    ldi tmp, 0xff
+    out PORTB, tmp
 
 ; loop:
-    ldi tmp, 0xff
-    sts PORTB, tmp
+;     in tmp, PIND
+;     out PORTB, tmp
 
-    ; rcall delay
-
-    ; ldi tmp, 0x00
-    ; sts PORTB, tmp
-
-    ; rcall delay
-    ; rjmp loop
+;     rjmp loop
 
 loop:
-    ldi tmp, PORTD2
-    sts PORTD, tmp
-
-    rcall delay
-
-    ldi tmp, 0
-    sts PORTD, tmp
-
-    rcall delay
-    rjmp loop
-
-; loop:
-    rcall delay
-
-    lds tmp, PIND
-    andi tmp, PIND2
-    breq low
+    in tmp, PIND
+    andi tmp, 1 << PIND2
+    brne low
 
     ; set high
-    lds tmp, PORTD
-    sbi tmp, PORTD1
-    sts PORTD, tmp
+    sbi PORTD, PORTD1
 
     rjmp loop
 
 low:
-    ; set low
-    lds tmp, PORTD
-    cbi tmp, PORTD1
-    sts PORTD, tmp
+    cbi PORTD, PORTD1
 
     rjmp loop
 
