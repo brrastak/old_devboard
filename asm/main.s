@@ -9,6 +9,7 @@
 .set r0, 0
 ; First function argument
 .set arg0, 24
+
 ; Index for the current digit being displayed (0-7); 7 corresponds to the non-digital indicator
 .set digit_index, 17
 ; Inverts value every time timer 0 overflows
@@ -22,16 +23,18 @@
 #define BUTTON1_MASK 0b00001000
 #define BUTTON2_MASK 0b00010000
 #define BUTTON3_MASK 0b00100000
+#define EN_LOUDSPEAKER_MASK 0b01000000
 
-.set ticksDin, 18
-
-.set Sound, 20
-.set Loud, 21
+; Counter to set loudspeaker state
+.set loudspeaker_ticks, 18
+; Loudspeaker period in ticks
+.set loudspeaker_period, 20
+; Loudspeaker volume in ticks (duty cycle); should be less than loudspeaker_period
+.set loudspeaker_volume, 21
 
 ; Temporary registers for calculations; not preserved across function calls
 .set tmp, 22
 .set tmp1, 23
-
 
 ; Define X/Y/Z register aliases used in the original AVRASM for indirect addressing and lpm instruction
 .set Xl, 26
@@ -46,6 +49,8 @@
 #define RESET_COUNTER 0
 ; Pin number of PORTD for a counter increment input
 #define INC_COUNTER 1
+; Pin number of PORTD for a loudspeaker
+#define LOUDSPEAKER 6
 
 
 .section .bss
@@ -101,15 +106,20 @@ RESET:
 	ldi tmp, lo8(RAMEND)
 	out SPL, tmp
 
+    ; Setup timer 0 for a 1ms overflow interrupt
 	ldi tmp, 0xff
 	out TIFR, tmp
-	ldi tmp, 6
+    ; Divide timer clock by 256-6 = 250
+    ldi tmp, 6
 	out TCNT0, tmp
-	ldi tmp, 2
+    ; Set prescaler to 8
+    ldi tmp, 1 << CS01
 	out TCCR0B, tmp
-	ldi tmp, 0x02
-	out TIMSK, tmp
+    ; Enable timer overflow interrupt
+    ldi tmp, 1 << TOIE0
+    out TIMSK, tmp
 
+    ; Setup I/O ports
 	ldi tmp, 0xff
 	out DDRB, tmp
 	ldi tmp, 0b11000011
@@ -118,11 +128,16 @@ RESET:
 	out PORTD, tmp
 	ldi tmp, 0b00111100
 	out PORTD, tmp
-	ldi tmp, 0b00000001
+	ldi tmp, 0b00000001 | EN_LOUDSPEAKER_MASK
 	mov flags, tmp
 
     ; Initial values
     clr counter_clock_phase
+    clr loudspeaker_ticks
+
+    ldi loudspeaker_period, 50
+    ldi loudspeaker_volume, 1
+    
 
 	sei
 
@@ -156,14 +171,8 @@ Loop:
 	rjmp Loop
 
 	rjmp Begin
+; end main
 
-
-; Wait:	push tmp
-; 	ldi tmp, 0
-; BA:	dec tmp
-; 	brne BA
-; 	pop tmp
-; 	ret
 
 ; Delay for arg0 cycles
 delay:
@@ -239,72 +248,39 @@ end_if_reset_digit_index:
 else_if_counter_clock_phase:
     sbi PORTD, INC_COUNTER
 
-
 end_if_counter_clock_phase:
 
-	; andi counter_clock_phase, 0b00000001
-	; brne CA
-	; mov tmp, flags
-	; andi tmp, 0b00000001
-	; breq CA
+    ; Loudspeaker control
+    mov tmp, flags
+	andi tmp, EN_LOUDSPEAKER_MASK
+	brne loudspeaker_enabled
 
+    ; Loudspeaker is disabled; reset counter and output
+	cbi PORTD, LOUDSPEAKER
+	clr loudspeaker_ticks
+	rjmp end
 
-; CA:	cpi ticks, 2
-; 	brne Din
+loudspeaker_enabled:
+    inc loudspeaker_ticks
+    ; Switch off if duty cycle is over
+    cp loudspeaker_ticks, loudspeaker_volume
+    brne check_period
+    cbi PORTD, LOUDSPEAKER
+    rjmp end
 
-; 	clr ticks
-; 	sbi PORTD, INC_COUNTER
-; 	mov tmp, flags
-; 	andi tmp, 0b00000001
-; 	breq CB
+check_period:
+    ; Switch on if period is over
+    cp loudspeaker_ticks, loudspeaker_period
+    brne end
+    clr loudspeaker_ticks
+    sbi PORTD, LOUDSPEAKER
 
-; 	inc digit_index
-; 	cpi digit_index, 8
-; 	brne CB
-; 	clr digit_index
-; CB:
-;     clr tmp
-; 	ldi Zl, lo8(values_to_display)
-; 	ldi Zh, hi8(values_to_display)
-; 	add Zl, digit_index
-; 	adc Zh, tmp
-; 	ld tmp, Z
-; 	out PORTB, tmp
-
-Din:	mov tmp, flags
-	andi tmp, 0b01000000
-	brne CC
-	cbi PORTD, 6
-	clr ticksDin
-	rjmp End
-
-CC:	inc ticksDin
-	mov tmp, flags
-	andi tmp, 0b10000000
-	brne CD
-
-	cp ticksDin, Sound
-	brne End
-	sbi PORTD, 6
-	rjmp CF
-
-CD:	cp ticksDin, Loud
-	brne CE
-	cbi PORTD, 6
-CE:	cp ticksDin, Sound
-	brne End
-	cbi PORTD, 6
-
-CF:	mov tmp, flags
-	com tmp
-	andi tmp, 0b10000000
-	andi flags, 0b01111111
-	or flags, tmp
-
-End:	pop Zh
+end:
+    pop Zh
 	pop Zl
 	pop tmp
 	out SREG, tmp
 	pop tmp
 
 	reti
+; end TIM0_OVF_ISR
